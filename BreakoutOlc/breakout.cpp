@@ -5,9 +5,9 @@
 Breakout::Breakout(void)
 {
 	sAppName = "Breakout";
-	for (size_t indexX = 0; indexX < _NumberBricksX; indexX++)
+	for (int32_t indexX = 0; indexX < _NumberBricksX; indexX++)
 	{
-		for (size_t indexY = 0; indexY < _NumberBricksY; indexY++)
+		for (int32_t indexY = 0; indexY < _NumberBricksY; indexY++)
 		{
 			_bricks[indexX][indexY].doesExist = true;
 			_bricks[indexX][indexY].pos.x = indexX * Config::GridSizeUnit;
@@ -100,7 +100,7 @@ bool Breakout::CollisionDetectionPaddle(void)
 	if (CheckAABBCollision(_ball.pos.x, _ball.pos.y, Config::GridSizeUnit, Config::GridSizeUnit,
 							_paddlePos.x, _paddlePos.y, Config::PaddleWidth, Config::GridSizeUnit))
 	{
-		double relativeIntersect = (_ball.pos.x - (_paddlePos.x + Config::PaddleWidth / 2)) / (Config::PaddleWidth / 2.0);
+		float relativeIntersect = (_ball.pos.x - (_paddlePos.x + Config::PaddleWidth / 2.0f)) / (Config::PaddleWidth / 2.0f);
 		_ball.angleRad = -Config::PI / 2 + (relativeIntersect * Config::MaxBounceAngle);
 		_ball.speed = (std::abs(relativeIntersect) + 1) * Config::BallSpeed90;
 		return true;
@@ -120,14 +120,37 @@ bool Breakout::CollisionDetectionBrick(void)
 				continue;
 			}
 			
-			if (CheckAABBCollision(_ball.pos.x, _ball.pos.y, Config::GridSizeUnit, Config::GridSizeUnit,
+			if (!CheckAABBCollision(_ball.pos.x, _ball.pos.y, Config::GridSizeUnit, Config::GridSizeUnit,
 				_bricks[indexX][indexY].pos.x, _bricks[indexX][indexY].pos.y, Config::GridSizeUnit, Config::GridSizeUnit))
 			{
-				_bricks[indexX][indexY].doesExist = false;
-				_ball.angleRad = -_ball.angleRad;
-				_points++;
-				return true;
+				continue;
 			}
+
+			_bricks[indexX][indexY].doesExist = false;
+			_points++;
+
+			float ballCenterX = _ball.pos.x + Config::GridSizeUnit / 2.0f;
+			float ballCenterY = _ball.pos.y + Config::GridSizeUnit / 2.0f;
+
+			float brickCenterX = _bricks[indexX][indexY].pos.x + Config::GridSizeUnit / 2.0f;
+			float brickCenterY = _bricks[indexX][indexY].pos.y + Config::GridSizeUnit / 2.0f;
+
+			float deltaX = ballCenterX - brickCenterX;
+			float deltaY = ballCenterY - brickCenterY;
+
+			float overlapX = (Config::GridSizeUnit / 2.0f + Config::GridSizeUnit / 2.0f) - std::abs(deltaX);
+			float overlapY = (Config::GridSizeUnit / 2.0f + Config::GridSizeUnit / 2.0f) - std::abs(deltaY);
+
+			if (overlapX < overlapY)
+			{
+				_ball.angleRad = Config::PI - _ball.angleRad;
+			}
+			else
+			{
+				_ball.angleRad = -_ball.angleRad;
+			}
+
+			return true;
 		}
 	}
 	return false;

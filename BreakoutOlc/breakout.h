@@ -17,8 +17,8 @@ public:
 private:
     struct Pos
     {
-        double x;
-        double y;
+        float x;
+        float y;
     };
 
     struct Brick

@@ -28,13 +28,13 @@ namespace Config
 	inline constexpr int32_t BallWidth = GridSizeUnit;
 	inline constexpr int32_t BallHeight = GridSizeUnit;
 
-	inline constexpr double PaddleSpeed = 100;
-	inline constexpr double BallSpeed90 = 100;
+	inline constexpr float PaddleSpeed = 100;
+	inline constexpr float BallSpeed90 = 100;
 
 	inline constexpr int32_t BrickLayers = 10;
 
-	inline constexpr double PI = 3.14159;
-	inline constexpr double MaxBounceAngle = PI / 3;
+	inline constexpr float PI = 3.14159f;
+	inline constexpr float MaxBounceAngle = PI / 3;
 
 	static_assert(ScreenWidth == InfoBoardWidth + GameWidth);
 	static_assert(ScreenHeight == TopLayerHeight + GameHeight);
