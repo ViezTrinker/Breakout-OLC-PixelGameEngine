@@ -45,6 +45,8 @@ private:
     bool CollisionDetectionRoof(void);
     bool CollisionDetectionBottom(void);
 
+    void CheckWinCondition(void);
+
     Pos _paddlePos = {(Config::GameWidth - Config::PaddleWidth) / 2, Config::ScreenHeight - Config::PaddleHeight};
     Ball _ball = { { (Config::GameWidth - Config::BallWidth) / 2, Config::ScreenHeight - Config::PaddleHeight - Config::BallHeight }, 1.5 * Config::PI, Config::BallSpeed90 };
 
@@ -55,6 +57,7 @@ private:
 
     bool _isGameStarted = false;
     bool _isGameOver = false;
+    bool _isGameWon = false;
     uint32_t _points = 0;
 };
 

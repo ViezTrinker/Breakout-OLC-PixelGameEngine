@@ -1,6 +1,8 @@
 #include "breakout.h"
 #include "config.h"
 
+#pragma comment(lib, "Winmm.lib")
+
 int main()
 {
     Breakout breakout;

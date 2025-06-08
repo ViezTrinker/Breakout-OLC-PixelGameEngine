@@ -1,6 +1,8 @@
 #include "breakout.h"
 
 #include <iostream>
+#include <windows.h>
+#include <mmsystem.h>
 
 Breakout::Breakout(void)
 {
@@ -23,7 +25,7 @@ bool Breakout::OnUserCreate(void)
 
 bool Breakout::OnUserUpdate(float fElapsedTime)
 {	
-	if (!_isGameOver)
+	if (!_isGameOver || !_isGameWon)
 	{
 		Input();
 		Logic();
@@ -40,11 +42,18 @@ void Breakout::Logic(void)
 	}
 
 	BallMovement();
-	if (CollisionDetectionBrick()) return;
-	if (CollisionDetectionRoof()) return;
-	if (CollisionDetectionPaddle()) return;
-	if (CollisionDetectionWall()) return;
-	if (CollisionDetectionBottom()) return;
+	if (CollisionDetectionBrick() || CollisionDetectionRoof() || CollisionDetectionPaddle() || CollisionDetectionWall())
+	{
+		PlaySound(TEXT("hitsound.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		return;
+	}
+
+	if (CollisionDetectionBottom())
+	{
+		return;
+	}
+
+	CheckWinCondition();
 }
 
 void Breakout::BallMovement(void)
@@ -129,6 +138,21 @@ bool Breakout::CollisionDetectionBrick(void)
 	return false;
 }
 
+void Breakout::CheckWinCondition(void)
+{
+	for (size_t indexX = 0; indexX < _NumberBricksX; indexX++)
+	{
+		for (size_t indexY = 0; indexY < _NumberBricksY; indexY++)
+		{
+			if (_bricks[indexX][indexY].doesExist == true)
+			{
+				return;
+			}
+		}
+	}
+	_isGameWon = true;
+}
+
 void Breakout::Input(void)
 {
 	// Handle User Input
@@ -172,6 +196,12 @@ void Breakout::Input(void)
 
 void Breakout::Display(void)
 {
+	if (_isGameWon)
+	{
+		DrawString(Config::GameWidth + Config::GridSizeUnit, Config::TopLayerHeight + Config::GameHeight / 2, "YOU WON!", olc::BLACK, 1);
+		return;
+	}
+	
 	// Erase previous frame
 	Clear(olc::WHITE);
 
@@ -180,7 +210,7 @@ void Breakout::Display(void)
 
 	// Draw Score
 	std::string pointString = "Points: ";
-	pointString.push_back(_points + '0');
+	pointString.append(std::to_string(_points));
 	DrawString(Config::GameWidth + Config::GridSizeUnit, Config::TopLayerHeight + Config::GridSizeUnit, pointString, olc::BLACK, 1);
 
 	if (_isGameOver)
