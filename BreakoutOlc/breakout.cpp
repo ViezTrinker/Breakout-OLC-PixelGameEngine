@@ -40,16 +40,12 @@ void Breakout::Logic(float fElapsedTime)
 	}
 
 	BallMovement(fElapsedTime);
-	if (CollisionDetectionBrick() || CollisionDetectionRoof() || CollisionDetectionPaddle() || CollisionDetectionWall())
-	{
-		//TODO Play Sound
-		return;
-	}
 
-	if (CollisionDetectionBottom())
-	{
-		return;
-	}
+	CollisionDetectionBrick();
+	CollisionDetectionRoof();
+	CollisionDetectionPaddle();
+	CollisionDetectionWall();
+	CollisionDetectionBottom();
 
 	CheckWinCondition();
 }
