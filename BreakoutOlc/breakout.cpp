@@ -25,21 +25,21 @@ bool Breakout::OnUserUpdate(float fElapsedTime)
 {	
 	if (!_isGameOver && !_isGameWon)
 	{
-		Input();
-		Logic();
+		Input(fElapsedTime);
+		Logic(fElapsedTime);
 	}
 	Display();
 	return true;
 }
 
-void Breakout::Logic(void)
+void Breakout::Logic(float fElapsedTime)
 {
 	if (!_isGameStarted)
 	{
 		return;
 	}
 
-	BallMovement();
+	BallMovement(fElapsedTime);
 	if (CollisionDetectionBrick() || CollisionDetectionRoof() || CollisionDetectionPaddle() || CollisionDetectionWall())
 	{
 		//TODO Play Sound
@@ -54,10 +54,10 @@ void Breakout::Logic(void)
 	CheckWinCondition();
 }
 
-void Breakout::BallMovement(void)
+void Breakout::BallMovement(float fElapsedTime)
 {
-	_ball.pos.x += _ball.speed * cos(_ball.angleRad);
-	_ball.pos.y += _ball.speed * sin(_ball.angleRad);
+	_ball.pos.x += _ball.speed * fElapsedTime * cos(_ball.angleRad);
+	_ball.pos.y += _ball.speed * fElapsedTime * sin(_ball.angleRad);
 }
 
 bool Breakout::CollisionDetectionBottom(void)
@@ -151,15 +151,15 @@ void Breakout::CheckWinCondition(void)
 	_isGameWon = true;
 }
 
-void Breakout::Input(void)
+void Breakout::Input(float fElapsedTime)
 {
 	// Handle User Input
 	if (GetKey(olc::Key::LEFT).bHeld)
 	{
-		_paddlePos.x -= Config::PaddleSpeed;
+		_paddlePos.x -= Config::PaddleSpeed * fElapsedTime;
 		if (!_isGameStarted)
 		{
-			_ball.pos.x -= Config::PaddleSpeed;
+			_ball.pos.x -= Config::PaddleSpeed * fElapsedTime;
 		}
 		if (_paddlePos.x <= 0)
 		{
@@ -172,10 +172,10 @@ void Breakout::Input(void)
 	}
 	if (GetKey(olc::Key::RIGHT).bHeld)
 	{
-		_paddlePos.x += Config::PaddleSpeed;
+		_paddlePos.x += Config::PaddleSpeed * fElapsedTime;
 		if (!_isGameStarted)
 		{
-			_ball.pos.x += Config::PaddleSpeed;
+			_ball.pos.x += Config::PaddleSpeed * fElapsedTime;
 		}
 		if (_paddlePos.x >= Config::GameWidth - Config::PaddleWidth)
 		{

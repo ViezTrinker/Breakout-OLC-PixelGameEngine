@@ -28,8 +28,8 @@ namespace Config
 	inline constexpr int32_t BallWidth = GridSizeUnit;
 	inline constexpr int32_t BallHeight = GridSizeUnit;
 
-	inline constexpr double PaddleSpeed = 0.2;
-	inline constexpr double BallSpeed90 = 0.2;
+	inline constexpr double PaddleSpeed = 100;
+	inline constexpr double BallSpeed90 = 100;
 
 	inline constexpr int32_t BrickLayers = 10;
 

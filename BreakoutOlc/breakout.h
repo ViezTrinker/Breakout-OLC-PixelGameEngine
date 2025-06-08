@@ -34,11 +34,11 @@ private:
         float speed;
     };
 
-    void Input(void);
-    void Logic(void);
+    void Input(float fElapsedTime);
+    void Logic(float fElapsedTime);
     void Display(void);
 
-    void BallMovement(void);
+    void BallMovement(float fElapsedTime);
     bool CollisionDetectionBrick(void);
     bool CollisionDetectionPaddle(void);
     bool CollisionDetectionWall(void);
