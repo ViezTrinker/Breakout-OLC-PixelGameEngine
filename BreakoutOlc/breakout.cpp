@@ -1,8 +1,6 @@
 #include "breakout.h"
 
 #include <iostream>
-#include <windows.h>
-#include <mmsystem.h>
 
 Breakout::Breakout(void)
 {
@@ -25,7 +23,7 @@ bool Breakout::OnUserCreate(void)
 
 bool Breakout::OnUserUpdate(float fElapsedTime)
 {	
-	if (!_isGameOver || !_isGameWon)
+	if (!_isGameOver && !_isGameWon)
 	{
 		Input();
 		Logic();
@@ -44,7 +42,7 @@ void Breakout::Logic(void)
 	BallMovement();
 	if (CollisionDetectionBrick() || CollisionDetectionRoof() || CollisionDetectionPaddle() || CollisionDetectionWall())
 	{
-		PlaySound(TEXT("hitsound.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		//TODO Play Sound
 		return;
 	}
 
@@ -99,7 +97,7 @@ bool Breakout::CollisionDetectionRoof(void)
 
 bool Breakout::CollisionDetectionPaddle(void)
 {
-	if (_ball.pos.x >= _paddlePos.x && _ball.pos.x < _paddlePos.x + Config::PaddleWidth)
+	if (_ball.pos.x + Config::PaddleWidth >= _paddlePos.x && _ball.pos.x < _paddlePos.x + Config::PaddleWidth)
 	{
 		if (_ball.pos.y >= _paddlePos.y - Config::GridSizeUnit && _ball.pos.y < _paddlePos.y + 2 * Config::GridSizeUnit)
 		{
