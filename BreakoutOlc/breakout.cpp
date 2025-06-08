@@ -121,15 +121,13 @@ bool Breakout::CollisionDetectionBrick(void)
 				continue;
 			}
 			
-			if (_ball.pos.x >= _bricks[indexX][indexY].pos.x && _ball.pos.x < _bricks[indexX][indexY].pos.x + Config::GridSizeUnit)
+			if (CheckAABBCollision(_ball.pos.x, _ball.pos.y, Config::GridSizeUnit, Config::GridSizeUnit,
+				_bricks[indexX][indexY].pos.x, _bricks[indexX][indexY].pos.y, Config::GridSizeUnit, Config::GridSizeUnit))
 			{
-				if (_ball.pos.y >= _bricks[indexX][indexY].pos.y && _ball.pos.y < _bricks[indexX][indexY].pos.y + Config::GridSizeUnit)
-				{
-					_bricks[indexX][indexY].doesExist = false;
-					_ball.angleRad = -_ball.angleRad;
-					_points++;
-					return true;
-				}
+				_bricks[indexX][indexY].doesExist = false;
+				_ball.angleRad = -_ball.angleRad;
+				_points++;
+				return true;
 			}
 		}
 	}
@@ -190,6 +188,11 @@ void Breakout::Input(float fElapsedTime)
 	{
 		_isGameStarted = true;
 	}
+}
+
+bool Breakout::CheckAABBCollision(float ax, float ay, float aw, float ah, float bx, float by, float bw, float bh)
+{
+	return (ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by);
 }
 
 void Breakout::Display(void)

@@ -45,6 +45,8 @@ private:
     bool CollisionDetectionRoof(void);
     bool CollisionDetectionBottom(void);
 
+    bool CheckAABBCollision(float ax, float ay, float aw, float ah, float bx, float by, float bw, float bh);
+
     void CheckWinCondition(void);
 
     Pos _paddlePos = {(Config::GameWidth - Config::PaddleWidth) / 2, Config::ScreenHeight - Config::PaddleHeight};
