@@ -97,16 +97,15 @@ bool Breakout::CollisionDetectionRoof(void)
 
 bool Breakout::CollisionDetectionPaddle(void)
 {
-	if (_ball.pos.x + Config::PaddleWidth >= _paddlePos.x && _ball.pos.x < _paddlePos.x + Config::PaddleWidth)
+	if (CheckAABBCollision(_ball.pos.x, _ball.pos.y, Config::GridSizeUnit, Config::GridSizeUnit,
+							_paddlePos.x, _paddlePos.y, Config::PaddleWidth, Config::GridSizeUnit))
 	{
-		if (_ball.pos.y >= _paddlePos.y - Config::GridSizeUnit && _ball.pos.y < _paddlePos.y + 2 * Config::GridSizeUnit)
-		{
-			double relativeIntersect = (_ball.pos.x - (_paddlePos.x + Config::PaddleWidth / 2)) / (Config::PaddleWidth / 2.0);
-			_ball.angleRad = -Config::PI / 2 + (relativeIntersect * Config::MaxBounceAngle);
-			_ball.speed = (std::abs(relativeIntersect) + 1) * Config::BallSpeed90;
-			return true;
-		}
+		double relativeIntersect = (_ball.pos.x - (_paddlePos.x + Config::PaddleWidth / 2)) / (Config::PaddleWidth / 2.0);
+		_ball.angleRad = -Config::PI / 2 + (relativeIntersect * Config::MaxBounceAngle);
+		_ball.speed = (std::abs(relativeIntersect) + 1) * Config::BallSpeed90;
+		return true;
 	}
+
 	return false;
 }
 
