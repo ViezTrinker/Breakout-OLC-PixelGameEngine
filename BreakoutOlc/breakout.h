@@ -10,7 +10,7 @@
 class Breakout : public olc::PixelGameEngine
 {
 public:
-	Breakout(void);
+    Breakout(void);
 
     bool OnUserCreate(void) override;
     bool OnUserUpdate(float fElapsedTime) override;
