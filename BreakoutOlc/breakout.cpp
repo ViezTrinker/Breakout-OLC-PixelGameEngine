@@ -223,7 +223,9 @@ void Breakout::Display(void)
 	Clear(olc::WHITE);
 
 	// Draw Top Layer Text
-	DrawString(Config::ScreenWidth / 2 - 30, Config::TopLayerHeight / 2 - 3, "BREAKOUT", olc::BLACK, 1);
+	std::string gameString = "BREAKOUT";
+	olc::vi2d textSize = GetTextSize(gameString);
+	DrawString((Config::ScreenWidth - textSize.x) / 2, (Config::TopLayerHeight - textSize.y) / 2, gameString, olc::BLACK, 1);
 
 	// Draw Score
 	std::string pointString = "Points: ";
