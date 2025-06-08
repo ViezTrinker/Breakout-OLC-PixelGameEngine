@@ -1,7 +1,5 @@
 #include "breakout.h"
 
-#include <iostream>
-
 Breakout::Breakout(void)
 {
 	sAppName = "Breakout";
